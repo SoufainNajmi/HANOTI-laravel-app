@@ -139,7 +139,7 @@
                 </div>
 
                 <!-- Auth Buttons -->
-                <div class="flex items-center space-x-4 animate-slideInRight">
+                <div class="hidden md:flex items-center space-x-4 animate-slideInRight">
                     @if (Route::has('login'))
                         @auth
                             <a href="{{ url('/dashboard') }}" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-5 py-2 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover-scale">
@@ -159,9 +159,32 @@
                 </div>
 
                 <!-- Mobile menu button -->
-                <button class="md:hidden text-gray-600 focus:outline-none">
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 focus:outline-none">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 top-full shadow-lg">
+            <div class="flex flex-col px-6 py-4 space-y-4">
+                <a href="#home" class="mobile-link text-gray-700 font-medium hover:text-indigo-600"><i class="fas fa-home mr-2"></i>Accueil</a>
+                <a href="#about" class="mobile-link text-gray-700 font-medium hover:text-indigo-600"><i class="fas fa-info-circle mr-2"></i>À propos</a>
+                <a href="#features" class="mobile-link text-gray-700 font-medium hover:text-indigo-600"><i class="fas fa-star mr-2"></i>Fonctionnalités</a>
+                <a href="#contact" class="mobile-link text-gray-700 font-medium hover:text-indigo-600"><i class="fas fa-envelope mr-2"></i>Contact</a>
+                
+                <div class="border-t border-gray-100 pt-4 flex flex-col space-y-3">
+                    @if (Route::has('login'))
+                        @auth
+                            <a href="{{ url('/dashboard') }}" class="bg-indigo-600 text-white text-center px-4 py-2 rounded-lg font-medium">Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}" class="border border-indigo-600 text-indigo-600 text-center px-4 py-2 rounded-lg font-medium">Connexion</a>
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="bg-indigo-600 text-white text-center px-4 py-2 rounded-lg font-medium">Inscription</a>
+                            @endif
+                        @endauth
+                    @endif
+                </div>
             </div>
         </div>
     </nav>
@@ -434,6 +457,20 @@
                         block: 'start'
                     });
                 }
+            });
+        });
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if(mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
             });
         });
     </script>
