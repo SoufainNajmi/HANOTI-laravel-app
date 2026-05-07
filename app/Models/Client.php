@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
-    //
+    protected $fillable = ['user_id', 'adresse', 'telephone'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class, 'client_id');
+    }
 }
